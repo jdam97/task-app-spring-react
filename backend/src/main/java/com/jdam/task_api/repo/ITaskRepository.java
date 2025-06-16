@@ -1,0 +1,7 @@
+package com.jdam.task_api.repo;
+
+import com.jdam.task_api.model.Task;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ITaskRepository extends JpaRepository<Task,Integer> {
+}
