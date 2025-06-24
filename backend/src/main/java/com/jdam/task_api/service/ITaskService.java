@@ -5,11 +5,11 @@ import com.jdam.task_api.model.Task;
 import java.util.List;
 
 public interface ITaskService {
-    public List<TaskRes> taskList();
+    public List<TaskRes> getAllTask();
     public TaskRes searchTaskById(Integer idTask);
-    public List<TaskRes> searchTask(String title);
+    public List<TaskRes> searchTaskByTitle(String title);
     public TaskRes createTask(TaskReq dto);
-    public void deleteTask(Integer idTask);
+    public TaskRes deleteTask(Integer idTask);
     public TaskRes updateTask(Integer idTask,TaskReq req);
     public TaskRes doneTask(Integer idTask, boolean done);
 }

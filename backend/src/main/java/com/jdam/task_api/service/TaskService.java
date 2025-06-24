@@ -2,6 +2,7 @@ package com.jdam.task_api.service;
 
 import com.jdam.task_api.dto.task.TaskReq;
 import com.jdam.task_api.dto.task.TaskRes;
+import com.jdam.task_api.exception.TaskNotFoundException;
 import com.jdam.task_api.mapper.TaskMapper;
 import com.jdam.task_api.model.Task;
 import com.jdam.task_api.repo.ITaskRepository;
@@ -18,7 +19,7 @@ public class TaskService implements ITaskService{
     //Devuelve una lista de todas las tareas
     //DTO
     @Override
-    public List<TaskRes> taskList() {
+    public List<TaskRes> getAllTask() {
         List<Task> taskList= taskRepository.findAll();
         List<TaskRes> allTask = taskList.stream().map(TaskMapper::toDto).toList();
         return allTask;
@@ -28,15 +29,16 @@ public class TaskService implements ITaskService{
     //DTO
     @Override
     public TaskRes searchTaskById(Integer idTask) {
-        Task task = taskRepository.findById(idTask).orElseThrow(()->new RuntimeException("Task not found"));
-        TaskRes alltask = TaskMapper.toDto(task);
-        return alltask;
+        Task task = taskRepository.findById(idTask)
+                .orElseThrow(()-> new TaskNotFoundException("Tarea con ID "+idTask+" No encontrada"));
+        TaskRes taskFinded = TaskMapper.toDto(task);
+        return taskFinded;
     }
 
     //Buscar por titulo
     //DTO
     @Override
-    public List<TaskRes> searchTask(String title) {
+    public List<TaskRes> searchTaskByTitle(String title) {
          List<Task> task = taskRepository.findByTitleContainingIgnoreCase(title);
         List<TaskRes> taskResList  = task.stream().map(TaskMapper::toDto).toList();
         return taskResList ;
@@ -54,15 +56,19 @@ public class TaskService implements ITaskService{
 
     // Borrar tarea
     @Override
-    public void deleteTask(Integer idTask) {
-        taskRepository.deleteById(idTask);
+    public TaskRes deleteTask(Integer idTask) {
+        Task task = taskRepository.findById(idTask).
+                orElseThrow(()-> new TaskNotFoundException("Tarea con ID "+idTask+" No encontrada"));
+        taskRepository.delete(task);
+        return TaskMapper.toDto(task);
     }
 
     //Editar tarea
     //DTO
     @Override
     public TaskRes updateTask(Integer idTask, TaskReq req) {
-       Task task = taskRepository.findById(idTask).orElseThrow(()->new RuntimeException("Task not found"));
+       Task task = taskRepository.findById(idTask)
+               .orElseThrow(()->new TaskNotFoundException("Tarea con ID "+idTask+" No encontrada"));
        task.setTitle(req.getTitle());
        task.setDescription(req.getDescription());
        task.setDate(req.getDate());
@@ -74,7 +80,7 @@ public class TaskService implements ITaskService{
     //DTO
     @Override
     public TaskRes doneTask(Integer idTask, boolean done) {
-        Task task = taskRepository.findById(idTask).orElseThrow(()->new RuntimeException("Task not found"));
+        Task task = taskRepository.findById(idTask).orElseThrow(()->new TaskNotFoundException("Tarea con ID "+idTask+" No encontrada"));
         task.setDone(done);
         TaskRes taskRes = TaskMapper.toDto(taskRepository.save(task));
         return taskRes;
