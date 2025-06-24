@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RequestMapping("/api")
-@CrossOrigin(value="http://localhost:3000")
+@CrossOrigin(value="http://localhost:3001")
 @RestController
 public class TaskController {
     //Inyeccion del service
