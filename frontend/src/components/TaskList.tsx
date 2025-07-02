@@ -5,10 +5,11 @@ import CardTask from './CardTask';
 interface TaskListProps {
     data: any[];
     state: String;
+    onTaskStatusChange: () => void;
 }
 
 
-function TaskList({ data }: TaskListProps) {
+function TaskList({ data,onTaskStatusChange }: TaskListProps) {
     
     return (
         <div className='p-7 '>
@@ -22,6 +23,7 @@ function TaskList({ data }: TaskListProps) {
                         description={task.description}
                         date={task.date}
                         done={task.done}
+                        onTaskStatusChange={onTaskStatusChange}
                         />
                     ))}
                 </div>

@@ -15,20 +15,48 @@ export interface Task{
   done:boolean;
 }
 
+export interface CountTasks{
+  total:number;
+  pending:number;
+  completed:number;
+}
+
 
 function App() {
   //hooks
   const [tasks,setTasks] = useState<Task[]>([]);
+  const [countTasks,setCountTasks] = useState<CountTasks>({total:0,pending:0,completed:0});
+  const [done,setDone] = useState<boolean | null>(null);
 
-  const allTasks= async()=>{
-    const urlBase = 'http://localhost:8080/api';
-      const result = await axios.get(urlBase+'/tasks')
-      setTasks(result.data.data);
+  //Listar todas las tareas
+  const urlBase = 'http://localhost:8080/api';
+
+  const allTasks= async(urlBase:any)=>{
+    console.log(done)
+    let result;
+    if(done==null){
+    result = await axios.get(urlBase+`/tasks`)
+    }else{
+    result = await axios.get(urlBase+`/tasks?done=${done}`)
+    }
+    setTasks(result.data.data);
+  }
+
+  //Contar las tareas
+  const getCountTasks=async(urlBase:any)=>{
+    const result = await axios.get(urlBase+'/tasks/count');
+    setCountTasks(result.data.data);
+  }
+
+  //Refresh
+  const refreshData=()=>{
+    allTasks(urlBase);
+    getCountTasks(urlBase);
   }
   
   useEffect(()=>{
-    allTasks();
-  },[])
+    refreshData();
+  },[done])
 
 
   return (
@@ -41,30 +69,34 @@ function App() {
         <div className='flex justify-center p-3 gap-4'>
           <CardsInfo
           title='Total'
-          value={0}
+          value={countTasks.total}
           icon={<FaCalendarAlt className='text-blue-500 bg-blue-100 p-2 rounded-md text-4xl'/>}
           valueClassName = "text-blue-500"
           />
           <CardsInfo
           title='Pendientes'
-          value={0}
+          value={countTasks.pending}
           icon={<FaRegCircle className='text-orange-500 bg-orange-100 p-2 rounded-md text-4xl'/>}
           valueClassName = "text-orange-500"
           />
           <CardsInfo
           title='Completadas'
-          value={0}
+          value={countTasks.completed}
           icon={<FaCheckCircle className='text-green-500 bg-green-100 p-2 rounded-md text-4xl'/>}
           valueClassName = "text-green-500"
           />
         </div>
         <div className='flex flex-col gap-5'>
-          <SearchAndCreate/>
+          <SearchAndCreate onTaskStatusChange={refreshData}/>
         <div className='flex flex-col gap-6'>
-          <Tabs/>
+          <Tabs
+          value={countTasks}
+          done={setDone}
+          />
           <TaskList
           data={tasks}
-          state='todas' />
+          state='todas'
+          onTaskStatusChange={refreshData} />
         </div>
         </div>
       </div>

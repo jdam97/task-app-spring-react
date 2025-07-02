@@ -1,7 +1,7 @@
 import { FaPlus, FaSearch } from "react-icons/fa";
 
 
-function SearchAndCreate(){
+function SearchAndCreate({onTaskStatusChange}:{onTaskStatusChange:()=>void}){
     return(
         <div className="flex justify-between bg-white rounded-lg shadow-md p-4 items-center gap-4 ">
             <form action="" className="flex items-center flex-1 rounded-md px-4 py-3 shadow-inner focus-within:ring-2 focus-within:ring-blue-400 transition">

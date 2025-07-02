@@ -3,14 +3,20 @@ import { FiEdit,FiTrash  } from 'react-icons/fi';
 import type { Task } from '../App';
 import axios from 'axios';
 
+interface CardTaskProps extends Task {
+  onTaskStatusChange?: () => void;
+}
+
  
 
-function CardTask({id,title,description,date,done}:Task) {
+function CardTask({id,title,description,date,done,onTaskStatusChange}:CardTaskProps) {
+
   const [marcado,setMarcado] = useState(done);
-  const handleChange = (e: any) => {
+  const handleChange = async (e: any) => {
     const checked = e.target.checked;
     setMarcado(checked);
-    changeState(checked);
+    await changeState(checked);
+    onTaskStatusChange?.();
   };
   
   const changeState = async (checked: boolean) => {
