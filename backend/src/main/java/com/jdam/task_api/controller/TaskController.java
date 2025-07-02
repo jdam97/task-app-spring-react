@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @RequestMapping("/api")
 @CrossOrigin(value="http://localhost:3000")
@@ -20,10 +21,10 @@ public class TaskController {
     @Autowired
     private ITaskService taskService;
 
-    //Listar todas las tareas
+    //Listar tareas(all,pending or completed)
     @GetMapping("/tasks")
-    public ResponseEntity<ApiResponse<List<TaskRes>>> getAllTasks(){
-        List<TaskRes> tasks = taskService.getAllTask();
+    public ResponseEntity<ApiResponse<List<TaskRes>>> getAllTasks(@RequestParam(required = false) Boolean done){
+        List<TaskRes> tasks = taskService.getTask(done);
         ApiResponse<List<TaskRes>> response = new ApiResponse<>(
                 LocalDateTime.now(),
                 HttpStatus.OK.value(),
@@ -76,6 +77,17 @@ public class TaskController {
             "Tarea eliminada",
             taskDeleted);
     return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+    //Contador tareas
+    @GetMapping("/tasks/count")
+    public ResponseEntity<ApiResponse<Map<String,Long>>> countTasks(){
+        Map<String,Long> stats = taskService.CountTasks();
+        ApiResponse<Map<String,Long>> response = new ApiResponse<>(
+                LocalDateTime.now(),
+                HttpStatus.OK.value(),
+                "Estados de tareas traido con exito",
+                stats);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     //Editar tarea

@@ -9,6 +9,7 @@ import com.jdam.task_api.repo.ITaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class TaskService implements ITaskService{
@@ -16,15 +17,30 @@ public class TaskService implements ITaskService{
     @Autowired
     private ITaskRepository taskRepository;
 
-    //Devuelve una lista de todas las tareas
+    //Envia las tareas filtradas
     //DTO
     @Override
-    public List<TaskRes> getAllTask() {
+    public List<TaskRes> getTask(Boolean done) {
+        if(done==null){
+            return getAllTasks();
+        }else {
+            return getTaskByDone(done);
+        }
+    }
+    //Devuelve una lista de todas las tareas
+    @Override
+    public List<TaskRes> getAllTasks() {
         List<Task> taskList= taskRepository.findAll();
         List<TaskRes> allTask = taskList.stream().map(TaskMapper::toDto).toList();
         return allTask;
     }
-
+    //Devuelve una lista de todas las tareas filtradas
+    @Override
+    public List<TaskRes> getTaskByDone(Boolean done) {
+        List<Task> taskList = taskRepository.findByDone(done);
+        List<TaskRes> allFindTasks = taskList.stream().map(TaskMapper::toDto).toList();
+        return allFindTasks;
+    }
     //Buscar por id
     //DTO
     @Override
@@ -84,5 +100,20 @@ public class TaskService implements ITaskService{
         task.setDone(done);
         TaskRes taskRes = TaskMapper.toDto(taskRepository.save(task));
         return taskRes;
+    }
+
+    //Counts
+    @Override
+    public Map<String, Long> CountTasks() {
+        long countTotalTasks = taskRepository.count();
+        long countPendingTasks = taskRepository.countByDone(false);
+        long countCompletedTasks = taskRepository.countByDone(true);
+
+        Map<String,Long> stats = Map.of(
+                "total", countTotalTasks,
+                "pending", countPendingTasks,
+                "completed",countCompletedTasks
+        );
+        return stats;
     }
 }
