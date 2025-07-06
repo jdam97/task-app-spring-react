@@ -5,11 +5,12 @@ import axios from 'axios';
 
 interface CardTaskProps extends Task {
   onTaskStatusChange?: () => void;
+  onDelete: (id:any)=>void;
+  selectTask:(task:Task)=>void;
+  openModal:(openModal:boolean)=>void;
 }
 
- 
-
-function CardTask({id,title,description,date,done,onTaskStatusChange}:CardTaskProps) {
+function CardTask({id,title,description,date,done,onTaskStatusChange,onDelete,selectTask,openModal}:CardTaskProps) {
 
   const [marcado,setMarcado] = useState(done);
   const handleChange = async (e: any) => {
@@ -46,10 +47,12 @@ function CardTask({id,title,description,date,done,onTaskStatusChange}:CardTaskPr
 
     <div className="flex gap-3 mt-1">
       <button>
-        <FiEdit className="w-5 h-5 text-gray-600 hover:text-blue-500 hover:cursor-pointer" />
+        <FiEdit className="w-5 h-5 text-gray-600 hover:text-blue-500 hover:cursor-pointer" 
+        onClick={()=>{selectTask({id,title,description,date,done}),openModal(true)}}/>
       </button>
       <button>
-        <FiTrash className="w-5 h-5 text-red-500 hover:text-red-700 hover:cursor-pointer" />
+        <FiTrash className="w-5 h-5 text-red-500 hover:text-red-700 hover:cursor-pointer" 
+        onClick={()=>{onDelete(id)}}/>
       </button>
     </div>
   </div>
