@@ -1,15 +1,19 @@
 import React from 'react'
 import { FaCalendarAlt } from 'react-icons/fa';
 import CardTask from './CardTask';
+import type { Task } from '../App';
 
 interface TaskListProps {
     data: any[];
     state: String;
     onTaskStatusChange: () => void;
+    onDelete:(id:any)=>void;
+    selectTask:(task:Task)=>void;
+    openModal:(openModal:boolean)=>void;
 }
 
 
-function TaskList({ data,onTaskStatusChange }: TaskListProps) {
+function TaskList({ data,onTaskStatusChange,onDelete,selectTask,openModal }: TaskListProps) {
     
     return (
         <div className='p-7 '>
@@ -24,6 +28,9 @@ function TaskList({ data,onTaskStatusChange }: TaskListProps) {
                         date={task.date}
                         done={task.done}
                         onTaskStatusChange={onTaskStatusChange}
+                        onDelete={onDelete}
+                        selectTask={selectTask}
+                        openModal={openModal}
                         />
                     ))}
                 </div>
