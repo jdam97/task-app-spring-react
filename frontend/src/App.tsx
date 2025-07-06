@@ -6,9 +6,10 @@ import SearchAndCreate from './components/SearchAndCreate';
 import Tabs from './components/Tabs';
 import TaskList from './components/TaskList';
 import axios from 'axios';
+import ModalTask from './components/ModalTask';
 
 export interface Task{
-  id:number;
+  id:number|undefined;
   title:string;
   description:string;
   date:Date;
@@ -22,17 +23,21 @@ export interface CountTasks{
 }
 
 
+
+
 function App() {
   //hooks
   const [tasks,setTasks] = useState<Task[]>([]);
   const [countTasks,setCountTasks] = useState<CountTasks>({total:0,pending:0,completed:0});
+  const [selectedTask, setSelectedTask] = useState<Task | null>(null);
   const [done,setDone] = useState<boolean | null>(null);
+  const [isOpen,setIsOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
-  //Listar todas las tareas
+  
   const urlBase = 'http://localhost:8080/api';
-
+  //Listar todas las tareas
   const allTasks= async(urlBase:any)=>{
-    console.log(done)
     let result;
     if(done==null){
     result = await axios.get(urlBase+`/tasks`)
@@ -41,6 +46,40 @@ function App() {
     }
     setTasks(result.data.data);
   }
+
+  //Eliminar tareas
+  const deleteTask = async (id:any)=>{
+    try {
+      const result = await axios.delete(urlBase+`/task/${id}`);
+      console.log(result)
+      refreshData();
+    } catch (error) {
+      console.error("Error al eliminar tareas:", error);
+    }
+  
+}
+
+//Agregar tarea
+const addTask = async(data:any)=>{
+  try {
+    const response = await axios.post(urlBase+'/task',data)
+    console.log(response)
+    refreshData();
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+//Editar tarea
+const editTask = async(data:Task,id:number)=>{
+  try {
+    const response = await axios.put(urlBase+`/task/${id}`,data)
+    
+    refreshData();
+  } catch (error) {
+    console.error("Error al editar tarea:", error);
+  }
+}
 
   //Contar las tareas
   const getCountTasks=async(urlBase:any)=>{
@@ -53,6 +92,15 @@ function App() {
     allTasks(urlBase);
     getCountTasks(urlBase);
   }
+
+  //Filtrar
+  const filteredTasks = tasks.filter((task) => {
+    const query = searchQuery.toLowerCase();
+    return (
+      task.title.toLowerCase().includes(query) ||
+      task.description.toLowerCase().includes(query)
+    );
+  });
   
   useEffect(()=>{
     refreshData();
@@ -87,20 +135,31 @@ function App() {
           />
         </div>
         <div className='flex flex-col gap-5'>
-          <SearchAndCreate onTaskStatusChange={refreshData}/>
+          <SearchAndCreate
+          cleanData={()=> setSelectedTask(null)}
+          onOpen={()=>setIsOpen(true)}
+          onSearch={setSearchQuery}/>
         <div className='flex flex-col gap-6'>
           <Tabs
           value={countTasks}
           done={setDone}
           />
           <TaskList
-          data={tasks}
+          data={filteredTasks}
           state='todas'
-          onTaskStatusChange={refreshData} />
+          onTaskStatusChange={refreshData}
+          onDelete={deleteTask}
+          selectTask={setSelectedTask}
+          openModal={setIsOpen}/>
         </div>
         </div>
       </div>
-      
+      <ModalTask
+      addTask={addTask}
+      isOpen={isOpen}
+      onClose={()=>{setIsOpen(false); setSelectedTask(null);}}
+      initialData={selectedTask}
+      onEdit={editTask}/>
     </div>
    
   )
