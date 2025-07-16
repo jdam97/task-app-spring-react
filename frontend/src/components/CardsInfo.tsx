@@ -1,6 +1,4 @@
 
-
-
 interface CardsInfoProps {
     title: string;
     icon: React.ReactNode;

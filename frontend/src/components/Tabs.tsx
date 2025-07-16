@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 interface TabsProps {
   value: { total: number, pending: number, completed: number };

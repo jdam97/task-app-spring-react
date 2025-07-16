@@ -73,7 +73,7 @@ const addTask = async(data:any)=>{
 //Editar tarea
 const editTask = async(data:Task,id:number)=>{
   try {
-    const response = await axios.put(urlBase+`/task/${id}`,data)
+    await axios.put(urlBase+`/task/${id}`,data)
     
     refreshData();
   } catch (error) {

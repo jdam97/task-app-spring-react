@@ -14,7 +14,10 @@ import java.util.List;
 import java.util.Map;
 
 @RequestMapping("/api")
-@CrossOrigin(value="http://localhost:3000")
+@CrossOrigin(origins = {
+        "http://localhost:3000",
+        "https://todo-app.vercel.app"
+})
 @RestController
 public class TaskController {
     //Inyeccion del service

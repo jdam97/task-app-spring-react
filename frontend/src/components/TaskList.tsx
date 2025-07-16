@@ -1,4 +1,3 @@
-import React from 'react'
 import { FaCalendarAlt } from 'react-icons/fa';
 import CardTask from './CardTask';
 import type { Task } from '../App';
@@ -19,7 +18,7 @@ function TaskList({ data,onTaskStatusChange,onDelete,selectTask,openModal }: Tas
         <div className='p-7 '>
             {(data.length>0) ?
                 <div className='flex flex-col gap-2'>
-                    {data.map((task,index)=>(
+                    {data.map((task)=>(
                         <CardTask
                         key={task.id}
                         id={task.id}

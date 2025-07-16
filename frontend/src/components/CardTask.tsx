@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { FiEdit,FiTrash  } from 'react-icons/fi';
 import type { Task } from '../App';
 import axios from 'axios';
