@@ -21,7 +21,8 @@ function CardTask({id,title,description,date,done,onTaskStatusChange,onDelete,se
   };
   
   const changeState = async (checked: boolean) => {
-    const url = `http://localhost:8080/api/task/done/${id}?done=${checked}`;
+    const urlBase = import.meta.env.VITE_API_URL;
+    const url = urlBase+`/task/done/${id}?done=${checked}`;
     console.log(checked);
     await axios.put(url);
   };

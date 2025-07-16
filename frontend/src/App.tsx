@@ -35,7 +35,7 @@ function App() {
   const [searchQuery, setSearchQuery] = useState('');
 
   
-  const urlBase = 'http://localhost:8080/api';
+  const urlBase = import.meta.env.VITE_API_URL;
   //Listar todas las tareas
   const allTasks= async(urlBase:any)=>{
     let result;
