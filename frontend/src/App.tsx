@@ -108,29 +108,29 @@ const editTask = async(data:Task,id:number)=>{
 
 
   return (
-    <div className='flex justify-center'>
-      <div className='p-6 max-w-[56rem]'>
-        <div className='flex flex-col justify-center items-center'>
-          <h1 className='text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 text-transparent bg-clip-text '>Mi Lista de Tareas</h1>
-          <p className='text-gray-600 mt-2'>Organiza tu día de manera eficiente</p>
+    <div className='flex justify-center min-h-screen bg-gray-50 px-2 sm:px-4'>
+      <div className='p-2 sm:p-6 w-full max-w-full sm:max-w-2xl md:max-w-3xl lg:max-w-4xl'>
+        <div className='flex flex-col justify-center items-center text-center'>
+          <h1 className='text-2xl sm:text-4xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 text-transparent bg-clip-text '>Mi Lista de Tareas</h1>
+          <p className='text-gray-600 mt-2 text-sm sm:text-base'>Organiza tu día de manera eficiente</p>
         </div>
-        <div className='flex justify-center p-3 gap-4'>
+        <div className='flex flex-col sm:flex-row justify-center sm:items-center p-2 sm:p-3 gap-2 sm:gap-4'>
           <CardsInfo
           title='Total'
           value={countTasks.total}
-          icon={<FaCalendarAlt className='text-blue-500 bg-blue-100 p-2 rounded-md text-4xl'/>}
+          icon={<FaCalendarAlt className='text-blue-500 bg-blue-100 p-2 rounded-md text-2xl sm:text-4xl'/>}
           valueClassName = "text-blue-500"
           />
           <CardsInfo
           title='Pendientes'
           value={countTasks.pending}
-          icon={<FaRegCircle className='text-orange-500 bg-orange-100 p-2 rounded-md text-4xl'/>}
+          icon={<FaRegCircle className='text-orange-500 bg-orange-100 p-2 rounded-md text-2xl sm:text-4xl'/>}
           valueClassName = "text-orange-500"
           />
           <CardsInfo
           title='Completadas'
           value={countTasks.completed}
-          icon={<FaCheckCircle className='text-green-500 bg-green-100 p-2 rounded-md text-4xl'/>}
+          icon={<FaCheckCircle className='text-green-500 bg-green-100 p-2 rounded-md text-2xl sm:text-4xl'/>}
           valueClassName = "text-green-500"
           />
         </div>

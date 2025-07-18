@@ -30,13 +30,13 @@ function CardTask({id,title,description,date,done,onTaskStatusChange,onDelete,se
 
 
   return (
-    <div className={`flex justify-between items-start bg-white rounded-lg shadow-md p-4 w-full ${marcado?'opacity-60 line-through':'opacity-100'}`}>
-    <div className="flex flex-col">
+    <div className={`flex flex-col sm:flex-row justify-between items-start bg-white rounded-lg shadow-md p-3 sm:p-4 w-full ${marcado?'opacity-60 line-through':'opacity-100'}`}>
+    <div className="flex flex-col w-full sm:w-auto">
       <div className="flex items-center mb-2 gap-2">
         <input type="checkbox" checked={marcado} onChange={handleChange}/>
-        <h3 className="font-semibold text-lg">{title}</h3>
+        <h3 className="font-semibold text-base sm:text-lg">{title}</h3>
       </div>
-      <p className="text-gray-500 text-sm mb-3">{description}</p>
+      <p className="text-gray-500 text-xs sm:text-sm mb-2 sm:mb-3">{description}</p>
       <p className="text-gray-400 text-xs">
         {new Date(date).toLocaleDateString('es-CO', {
           day: '2-digit',
@@ -45,8 +45,7 @@ function CardTask({id,title,description,date,done,onTaskStatusChange,onDelete,se
         })}
       </p>
     </div>
-
-    <div className="flex gap-3 mt-1">
+    <div className="flex gap-2 sm:gap-3 mt-2 sm:mt-1">
       <button>
         <FiEdit className="w-5 h-5 text-gray-600 hover:text-blue-500 hover:cursor-pointer" 
         onClick={()=>{selectTask({id,title,description,date,done}),openModal(true)}}/>

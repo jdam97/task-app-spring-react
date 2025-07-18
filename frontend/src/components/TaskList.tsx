@@ -15,7 +15,7 @@ interface TaskListProps {
 function TaskList({ data,onTaskStatusChange,onDelete,selectTask,openModal }: TaskListProps) {
     
     return (
-        <div className='p-7 '>
+        <div className='p-2 sm:p-7'>
             {(data.length>0) ?
                 <div className='flex flex-col gap-2'>
                     {data.map((task)=>(

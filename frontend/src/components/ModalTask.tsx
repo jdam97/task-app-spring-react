@@ -84,7 +84,7 @@ function ModalTask({ isOpen, onClose, addTask,initialData,onEdit}: ModalTaskProp
         >
             <form
                 onSubmit={handleSubmit}
-                className={`bg-white p-6 rounded-lg w-[28rem] shadow-lg transform transition-all duration-500 ease-in-out
+                className={`bg-white p-2 sm:p-6 rounded-lg w-full max-w-xs sm:max-w-md md:max-w-lg shadow-lg transform transition-all duration-500 ease-in-out
             ${isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}
           `}
                 onClick={(e) => e.stopPropagation()} >
